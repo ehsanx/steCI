@@ -1,0 +1,5 @@
+[robust] task 126 start Sun Jul 19 12:52:11 PDT 2026 on se085
+[robust] task 126 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] misspec gi=6 n=5000 alpha=0.25 | chunk 47, replicates 461..470
+[robust] wrote rob_misspec_gi06_n5000_a025_R500_chunk047.rds | 10/10 ok | 641.6s | peak 453 MB
+[robust] task 126 done  Sun Jul 19 13:03:23 PDT 2026

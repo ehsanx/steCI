@@ -1,0 +1,5 @@
+[robust] task 135 start Sun Jul 19 12:52:11 PDT 2026 on se085
+[robust] task 135 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] misspec gi=8 n=1000 alpha=0.4 | chunk 4, replicates 301..400
+[robust] wrote rob_misspec_gi08_n1000_a04_R500_chunk004.rds | 100/100 ok | 383.6s | peak 305 MB
+[robust] task 135 done  Sun Jul 19 12:59:16 PDT 2026

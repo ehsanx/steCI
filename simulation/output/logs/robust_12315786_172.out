@@ -1,0 +1,5 @@
+[robust] task 172 start Sun Jul 19 12:52:14 PDT 2026 on se159
+[robust] task 172 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] misspec gi=9 n=5000 alpha=0.4 | chunk 36, replicates 351..360
+[robust] wrote rob_misspec_gi09_n5000_a04_R500_chunk036.rds | 10/10 ok | 635.8s | peak 468 MB
+[robust] task 172 done  Sun Jul 19 13:03:20 PDT 2026

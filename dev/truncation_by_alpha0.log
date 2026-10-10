@@ -1,0 +1,33 @@
+# Rscript dev/truncation_by_alpha0.R (R 4.5.1, 2026-10-06; part 2 read data/results/replicates_all.rds)
+alpha_0 = 0.05: neg_haz_frac over the 9 prevalence x confounding cells (n = 4000 each)
+  mean 0.2729  min 0.1441  max 0.4274
+ gamma.0 gamma.L neg_haz_frac
+       0     0.5       0.4274
+      -1     0.5       0.2818
+      -2     0.5       0.1441
+       0     1.5       0.3718
+      -1     1.5       0.2648
+      -2     1.5       0.1621
+       0     3.0       0.3347
+      -1     3.0       0.2722
+      -2     3.0       0.1973
+
+alpha_0 = 0.15: neg_haz_frac over the 9 prevalence x confounding cells (n = 4000 each)
+  mean 0.0001  min 0.0000  max 0.0002
+ gamma.0 gamma.L neg_haz_frac
+       0     0.5        0e+00
+      -1     0.5        1e-04
+      -2     0.5        0e+00
+       0     1.5        1e-04
+      -1     1.5        0e+00
+      -2     1.5        1e-04
+       0     3.0        2e-04
+      -1     3.0        0e+00
+      -2     3.0        0e+00
+
+Main simulation (data/results/replicates_all.rds, neg_haz_frac per replicate; 80988 replicates):
+  alpha_0 = 0.15: mean 3.9e-05, max 0.002
+  alpha_0 = 0.25: mean 0, max 0
+  alpha_0 = 0.40: mean 0, max 0
+
+Paper wording: at alpha_0 = 0.05, 14-43% of hazard evaluations are truncated depending on treatment prevalence and confounding (mean 27%); at most 0.2% at alpha_0 >= 0.15.

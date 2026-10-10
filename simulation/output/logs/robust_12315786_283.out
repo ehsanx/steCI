@@ -1,0 +1,5 @@
+[robust] task 283 start Sun Jul 19 12:52:27 PDT 2026 on se230
+[robust] task 283 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] tvfx gi=6 n=5000 alpha=0.25 | chunk 33, replicates 321..330
+[robust] wrote rob_tvfx_gi06_n5000_a025_R500_chunk033.rds | 10/10 ok | 634.5s | peak 437 MB
+[robust] task 283 done  Sun Jul 19 13:03:21 PDT 2026

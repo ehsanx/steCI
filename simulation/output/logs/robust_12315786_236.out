@@ -1,0 +1,5 @@
+[robust] task 236 start Sun Jul 19 12:52:13 PDT 2026 on se161
+[robust] task 236 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] tvfx gi=3 n=5000 alpha=0.15 | chunk 43, replicates 421..430
+[robust] wrote rob_tvfx_gi03_n5000_a015_R500_chunk043.rds | 10/10 ok | 519.4s | peak 399 MB
+[robust] task 236 done  Sun Jul 19 13:01:22 PDT 2026

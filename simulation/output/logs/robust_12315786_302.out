@@ -1,0 +1,5 @@
+[robust] task 302 start Sun Jul 19 12:52:14 PDT 2026 on se231
+[robust] task 302 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] tvfx gi=7 n=300 alpha=0.4 | chunk 2, replicates 251..500
+[robust] wrote rob_tvfx_gi07_n300_a04_R500_chunk002.rds | 250/250 ok | 175.3s | peak 259 MB
+[robust] task 302 done  Sun Jul 19 12:55:33 PDT 2026

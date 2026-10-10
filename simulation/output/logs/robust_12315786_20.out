@@ -1,0 +1,5 @@
+[robust] task 20 start Sun Jul 19 12:52:09 PDT 2026 on se040
+[robust] task 20 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] misspec gi=2 n=1000 alpha=0.15 | chunk 3, replicates 201..300
+[robust] wrote rob_misspec_gi02_n1000_a015_R500_chunk003.rds | 100/100 ok | 385.4s | peak 298 MB
+[robust] task 20 done  Sun Jul 19 12:58:59 PDT 2026

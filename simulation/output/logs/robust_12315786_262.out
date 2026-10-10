@@ -1,0 +1,5 @@
+[robust] task 262 start Sun Jul 19 12:52:13 PDT 2026 on se230
+[robust] task 262 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] tvfx gi=6 n=5000 alpha=0.25 | chunk 12, replicates 111..120
+[robust] wrote rob_tvfx_gi06_n5000_a025_R500_chunk012.rds | 10/10 ok | 627.9s | peak 439 MB
+[robust] task 262 done  Sun Jul 19 13:03:13 PDT 2026

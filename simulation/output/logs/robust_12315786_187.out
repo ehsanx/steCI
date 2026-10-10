@@ -1,0 +1,5 @@
+[robust] task 187 start Sun Jul 19 12:52:13 PDT 2026 on se159
+[robust] task 187 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] tvfx gi=1 n=300 alpha=0.15 | chunk 1, replicates 1..250
+[robust] wrote rob_tvfx_gi01_n300_a015_R500_chunk001.rds | 250/250 ok | 182.2s | peak 263 MB
+[robust] task 187 done  Sun Jul 19 12:55:44 PDT 2026

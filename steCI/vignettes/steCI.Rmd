@@ -1,0 +1,287 @@
+---
+title: "steCI user manual"
+subtitle: "Sequential trial emulation with additive hazards: estimation, confidence intervals and simultaneous bands"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{steCI user manual}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+`steCI` implements the weighted-Aalen additive-hazards sequential-trial-emulation
+(STE) estimator of a causal effect on a time-to-event outcome, together with
+several confidence-interval procedures. It reimplements, with citation, the
+estimator of Keogh et al. (2023) and the confidence-interval comparison framework
+of Limozin, Seaman and Su (2025). This manual walks through a complete analysis of
+public data and documents the main arguments. The methods and their evaluation are
+described in the companion paper (Karim, 2026).
+
+## What the package estimates
+
+From longitudinal data with a time-varying treatment and a time-varying confounder,
+`steCI` emulates a sequence of trials, one starting at each visit, among subjects
+untreated before the trial-baseline treatment decision. This implementation requires
+absorbing observed treatment: once treated, a subject remains treated. Control-arm
+rows are artificially censored when treatment is initiated, and stabilised inverse
+probability of artificial-censoring weights (IPACW) correct for that censoring.
+The two weight models are fitted to the control arm; treated-arm weights are one.
+A weighted Aalen additive-hazards
+model is fitted to the stacked trials. Two estimands are available:
+
+* **E1, the constant hazard difference**: the coefficient of trial-baseline
+  treatment in an additive-hazards model with a time-constant treatment effect.
+  If the marginal effect varies over follow-up, this is a design-weighted constant
+  summary that depends on the emulated-trial structure and analysis weights;
+* **E2, the marginal risk-difference (MRD) curve**: always-treated minus
+  never-treated risk at each horizon, obtained by standardising the fitted model
+  over the empirical distribution of baseline covariates.
+
+Because a subject who stays untreated enters several of the emulated trials, the
+stacked rows are not independent. The confidence-interval functions differ in how
+they handle this:
+
+| Function | Method | Estimand | Notes |
+|---|---|---|---|
+| `ci_analytic()` | M1 model-based, M2 row-level robust, M3 cluster-robust SE | E1 | M3 clusters on the subject `id` |
+| `ci_bootstrap()` | M4 nonparametric bootstrap of subjects | E1, E2 | refits the trials, the weights and the model in every resample; slow |
+| `ci_jackknife()` | M5 delete-one-subject jackknife | E1, E2 | one refit per subject |
+| `ci_lef()` | M6 linearised estimating function / multiplier bootstrap | E2 | row and cluster analytic SEs, pointwise multiplier intervals and a simultaneous (sup-*t*) band; no refitting |
+
+The row-level robust SE (M2) treats every stacked row as independent and omits an
+aggregate within-subject cross-record term; the paper recommends the subject-clustered
+alternatives (M3 for E1, M6 for E2).
+
+## Input data
+
+The functions take **long data**: one start-stop record per subject and visit, with
+columns
+
+* `id`: subject identifier;
+* `time`, `time.stop`: start and stop of the interval, in visit units (visit `k`
+  starts at `time = k - 1`);
+* `event`: 1 if the event occurred in the interval;
+* `visit`: visit number, `1, 2, ...`;
+* `A`: treatment at the start of the interval (monotone: once on, always on);
+* `L`: the confounder measured at the start of the interval;
+* `Alag1`: treatment at the previous visit (0 at the first visit);
+* `L.baseline`: the subject's value of `L` at the first visit.
+
+`dat_sim()` simulates data in this format (see the last section).
+
+## Example: the Stanford heart transplant data
+
+The Stanford heart transplant data (`survival::jasa`) record 103 patients
+accepted into the transplant programme; treatment is a heart transplant, which
+occurs at a time-varying point after acceptance and is absorbing, and the outcome
+is death. One patient with zero follow-up is dropped, leaving 102. We use the same
+preparation as the paper's application (`applied/heart_common.R` in the compendium;
+the function below reproduces its `heart_to_ste()` exactly): six 30-day visits,
+`A` = transplanted
+by the start of the visit, `L` = standardised age, and the event = death within the
+visit. Follow-up is recorded in whole days, so the times lie on a grid of 1/30 of a
+visit.
+
+```{r data}
+library(steCI)
+
+heart_long <- function(w = 30, K = 6) {
+  jasa <- survival::jasa
+  jasa <- jasa[jasa$futime > 0, ]            # drop zero follow-up
+  Lage <- as.numeric(scale(jasa$age))        # standardised age
+  rows <- lapply(seq_len(nrow(jasa)), function(i) {
+    fut  <- jasa$futime[i]                   # days of follow-up
+    dead <- jasa$fustat[i] == 1
+    wt   <- jasa$wait.time[i]                # days to transplant (NA if none)
+    k    <- 0:(K - 1)
+    k    <- k[fut > k * w]                   # visits the patient reaches
+    data.frame(id = i, time = k,
+               time.stop = k + (pmin((k + 1) * w, fut) - k * w) / w,
+               event = as.integer(dead & fut > k * w & fut <= (k + 1) * w),
+               A = as.integer(!is.na(wt) & wt <= k * w),
+               L = Lage[i])
+  })
+  d <- do.call(rbind, rows)
+  d$visit <- d$time + 1
+  d$Alag1 <- ave(d$A, d$id, FUN = function(a) c(0, a[-length(a)]))
+  d$L.baseline <- ave(d$L, d$id, FUN = function(x) rep(x[1], length(x)))
+  d
+}
+
+K <- 6       # visits (30-day months)
+W <- 30      # grid points (days) per visit
+d <- heart_long(w = W, K = K)
+head(d)
+c(rows = nrow(d), patients = length(unique(d$id)), deaths = sum(d$event))
+```
+
+### Emulating the trials
+
+`ste_prepare()` builds one trial per visit, restricts each later trial to patients
+untreated at the previous visit, censors control-arm rows when treatment is
+initiated, and computes the stabilised IPACW weights
+(`ipw.stab.cum`, and a version truncated at the 95th percentile,
+`ipw.stab.cum.trunc`). Treated-arm weights are one under the absorbing-treatment
+assumption. `time.grid = W` snaps the trial-relative times to the
+exact day grid, so that deaths on the same trial-relative day are exact ties
+rather than floating-point near-ties.
+
+```{r prepare}
+ds <- ste_prepare(d, n.visit = K, time.grid = W)
+table(trial = ds$trial, treated_at_baseline = ds$A.baseline)
+summary(ds$ipw.stab.cum)
+```
+
+### Point estimates
+
+`ste_estimate()` prepares the trials and fits the model in one call;
+`estimand = "both"` returns the constant hazard difference (`gamma`) and the
+risk-difference curve (`mrd`) at the horizons `t.hor`. The heart data have many
+tied death days, so we use `ties = "simultaneous"`, which enters tied events in a
+single increment on a common risk set (see *Tied event times* below).
+
+```{r estimate}
+est <- ste_estimate(d, n.visit = K, t.hor = 1:K, estimand = "both",
+                    ties = "simultaneous", time.grid = W)
+est$gamma                                   # E1: per 30-day visit
+round(setNames(est$mrd, paste0("month", 1:K)), 4)   # E2: risk difference
+```
+
+A negative risk difference means a lower risk of death under "always transplant"
+than under "never transplant". No analysed death falls in the sixth trial month,
+so the five- and six-month estimates coincide. The prepared data are attached to
+the result as `attr(est, "dat.seq")`.
+
+### Analytic standard errors for E1 (M1-M3)
+
+`ci_analytic()` takes the prepared data and returns the model-based (M1),
+row-level robust (M2) and cluster-robust (M3) standard errors with Wald intervals.
+M3 clusters the robust variance on the subject `id`, so it accounts for a patient
+contributing to several trials. Pass the same `ties` setting as the point estimate.
+
+```{r analytic}
+ci_analytic(attr(est, "dat.seq"), ties = "simultaneous")
+```
+
+The cluster-robust SE is noticeably larger than the row-level one: the row-level
+SE omits the aggregate cross-record term within a patient.
+(Like `timereg`, `ci_analytic()` bins clusters into at most 1000 groups; with 102
+patients every patient is its own cluster.)
+
+### Intervals and a simultaneous band for E2 (M6)
+
+`ci_lef()` linearises the estimator through its influence functions and returns,
+at each horizon, Wald intervals from the row-level and subject-clustered analytic
+SEs, percentile intervals from a multiplier (wild) bootstrap of the subject-level
+influence functions, and a simultaneous sup-*t* band for the whole curve. It
+re-uses one fit, so the multiplier draws are cheap. It always processes tied event
+times simultaneously; pass the same `time.grid`. We use `B = 200` draws to keep this
+manual fast to build; the paper's application uses `B = 1000`.
+
+```{r lef}
+lf <- ci_lef(d, n.visit = K, t.hor = 1:K, B = 200, seed = 1, time.grid = W)
+lf$mrd[, c("tau", "type", "estimate", "se", "lower", "upper")]
+lf$band[, c("tau", "estimate", "lower", "upper")]
+```
+
+The band is asymptotically valid for the curve's fixed-weight,
+fixed-standardisation linearisation under the conditions stated in the paper;
+it is wider than the pointwise intervals. In the paper's simulation
+its simultaneous coverage was below nominal (0.88 on average), so read it as an
+approximate band.
+
+```{r band-plot, fig.width = 6, fig.height = 4}
+pw <- lf$mrd[lf$mrd$type == "analytic_cluster", ]
+bd <- lf$band
+plot(bd$tau, bd$estimate, type = "s", ylim = range(bd$lower, bd$upper),
+     xlab = "Month since trial baseline", ylab = "Risk difference (death)")
+lines(bd$tau, bd$lower, type = "s", lty = 2)
+lines(bd$tau, bd$upper, type = "s", lty = 2)
+lines(pw$tau, pw$lower, type = "s", lty = 3)
+lines(pw$tau, pw$upper, type = "s", lty = 3)
+abline(h = 0, col = "grey")
+legend("bottomleft", bty = "n", lty = c(1, 2, 3),
+       legend = c("estimate", "simultaneous band", "pointwise (cluster SE)"))
+```
+
+Two optional arguments extend the multiplier bootstrap:
+
+* `approach = "a2"` adds a first-order correction for the estimation of the
+  weights (through the two logistic weight models; it requires `weight = "stab"`).
+  This correction was evaluated empirically; its asymptotic validity is not
+  established in the paper;
+* `standardization = "random"` adds the sampling variability of the
+  standardisation population, giving the unconditional variance; the default
+  `"fixed"` conditions on the observed baseline covariates.
+
+## Resampling methods (M4, M5)
+
+The nonparametric bootstrap resamples subjects and repeats the whole analysis:
+trial construction, weight models and the Aalen fit. The jackknife deletes one
+subject at a time. Both are slower than the methods above (on a laptop, several
+minutes for the heart bootstrap with `B = 1000` and about half a minute for the
+jackknife), so they are not run when this manual is built.
+Passing the full-sample estimate as `point =` centres the intervals on it; its
+tie convention must match `ties`.
+
+```{r resampling, eval = FALSE}
+bo <- ci_bootstrap(d, n.visit = K, t.hor = 1:K, B = 1000, estimand = "both",
+                   seed = 1, ties = "simultaneous", time.grid = W, point = est)
+bo$gamma          # E1: bootstrap SE and intervals
+bo$mrd            # E2: by horizon
+bo$n_singular     # refits that skipped a singular risk set
+jk <- ci_jackknife(d, n.visit = K, t.hor = 1:K, estimand = "both", max_n = 200,
+                   ties = "simultaneous", time.grid = W, point = est)
+```
+
+The script `applied/heart_analysis.R` in the compendium runs all six methods on
+these data and produces the paper's application tables.
+
+## Tied event times
+
+`timereg::aalen()` breaks tied event times by random jitter, so with tied data
+every fit consumes random numbers and its result depends on the seed. `ste_fit()`,
+`ste_estimate()`, `ci_analytic()`, `ci_bootstrap()` and `ci_jackknife()` take
+
+* `ties = "timereg"` (the default, used in the paper's simulation study), or
+* `ties = "simultaneous"`: tied events enter one increment on a common risk set,
+  and no random numbers are used.
+
+On data without tied event times the two settings agree to machine precision.
+Bootstrap resamples always contain ties, because duplicated subjects share their
+event times. For data recorded on a discrete sub-visit grid, set `time.grid` to the
+number of grid points per visit, as above.
+
+## Simulated data
+
+`dat_sim()` simulates from the additive-hazard marginal structural model of
+Keogh et al. (2021): an unmeasured frailty, a time-varying confounder, a monotone
+treatment and a piecewise-constant additive hazard. `true_values()` computes a
+Monte-Carlo approximation to the single-cohort marginal targets ("always treated"
+versus "never treated" from baseline); the paper's simulation study uses the
+closed-form values stored in the compendium's `dev/truth_cache_exact.rds`. The
+simulated event times are continuous, so the default `ties = "timereg"` applies.
+
+```{r simulate}
+sim <- dat_sim(n = 500, seed = 1)
+est_sim <- ste_estimate(sim, estimand = "both", t.hor = 1:5)
+est_sim$gamma
+round(est_sim$mrd, 4)
+ci_analytic(attr(est_sim, "dat.seq"))
+```
+
+## References
+
+- Karim ME (2026). Confidence intervals and simultaneous bands for additive-hazards
+  sequential trial emulation. Manuscript.
+- Keogh RH, Gran JM, Seaman SR, Davies G, Vansteelandt S (2023). Causal inference
+  in survival analysis using longitudinal observational data: sequential trials and
+  marginal structural models. *Statistics in Medicine* 42(13):2191--2225.
+- Keogh RH, Seaman SR, Gran JM, Vansteelandt S (2021). Simulating longitudinal data
+  from marginal structural models using the additive hazard model. *Biometrical
+  Journal* 63(7):1526--1541.
+- Limozin JM, Seaman SR, Su L (2025). Inference procedures in sequential trial
+  emulation with survival outcomes. *Statistical Methods in Medical Research*.

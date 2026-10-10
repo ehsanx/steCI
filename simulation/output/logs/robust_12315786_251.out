@@ -1,0 +1,5 @@
+[robust] task 251 start Sun Jul 19 12:52:14 PDT 2026 on se161
+[robust] task 251 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] tvfx gi=6 n=5000 alpha=0.25 | chunk 1, replicates 1..10
+[robust] wrote rob_tvfx_gi06_n5000_a025_R500_chunk001.rds | 10/10 ok | 632.7s | peak 435 MB
+[robust] task 251 done  Sun Jul 19 13:03:00 PDT 2026

@@ -1,0 +1,39 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software, please cite it as below, together with the paper
+  "Confidence Intervals and Simultaneous Bands for Additive-Hazards Sequential
+  Trial Emulation" (M. Ehsan Karim).
+type: software
+title: >-
+  steCI: Confidence Intervals and Simultaneous Bands for Additive-Hazards
+  Sequential Trial Emulation
+version: 0.0.1
+authors:
+  - family-names: Karim
+    given-names: M. Ehsan
+    orcid: "https://orcid.org/0000-0002-0346-2871"
+    affiliation: >-
+      School of Population and Public Health, University of British Columbia,
+      Vancouver, Canada
+license: MIT
+repository-code: "https://github.com/ehsanx/steCI"
+abstract: >-
+  R package steCI and the reproducibility compendium of its companion paper.
+  The package estimates a constant hazard difference and the marginal
+  risk-difference curve by sequential trial emulation with a weighted Aalen
+  additive-hazards model and stabilised inverse-probability-of-artificial-censoring
+  weights, and provides model-based, row-level robust and subject-clustered
+  analytic standard errors, the nonparametric bootstrap, the jackknife, and a
+  multiplier bootstrap with pointwise intervals and a simultaneous sup-t band
+  for the risk-difference curve.
+keywords:
+  - sequential trial emulation
+  - additive hazards
+  - Aalen model
+  - confidence intervals
+  - simultaneous confidence bands
+  - multiplier bootstrap
+  - cluster-robust variance
+  - influence function
+  - survival analysis
+  - R

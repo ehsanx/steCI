@@ -1,0 +1,103 @@
+replicate rows: 13000  (status: ok=13000)
+exact truth key-space covers all 7 cells x 5 horizons: OK
+
+=== WEB TABLE S5 (tab:stdvar) RESCORED AGAINST dev/truth_cache_exact.rds ===
+printed_* = the table as first printed; new_* = Web Table S5; coverage = mean over tau = 1..5 of M6 cluster-Wald coverage
+ line    n   ev  nv printed_fixed new_fixed fixed_4dp fixed_mcse printed_random
+   NA  300  low 400         0.922     0.921    0.9210     0.0092          0.922
+   NA  300  med 400         0.916     0.916    0.9160     0.0093          0.916
+   NA  300 high 400         0.934     0.934    0.9345     0.0074          0.934
+   NA 1000  low 400         0.943     0.941    0.9410     0.0073          0.943
+   NA 1000  med 400         0.910     0.908    0.9080     0.0098          0.910
+   NA 1000 high 400         0.933     0.933    0.9330     0.0077          0.933
+   NA 5000  med 200         0.939     0.936    0.9360     0.0095          0.939
+ new_random random_4dp tie d_fixed d_random
+      0.921     0.9210      -0.001   -0.001
+      0.916     0.9160       0.000    0.000
+      0.934     0.9345 TIE   0.000    0.000
+      0.941     0.9410      -0.002   -0.002
+      0.908     0.9080      -0.002   -0.002
+      0.933     0.9330       0.000    0.000
+      0.936     0.9360      -0.003   -0.003
+
+Paired random - fixed (horizon-mean; same replicates, same truth):
+    n   ev cl_diff cl_mcse cl_discordant mult_diff mult_mcse mult_discordant
+  300  low +0.0000  0.0000             0   +0.0005    0.0005               1
+  300  med +0.0000  0.0000             0   +0.0000    0.0007               2
+  300 high +0.0000  0.0000             0   -0.0005    0.0009               3
+ 1000  low +0.0000  0.0000             0   +0.0000    0.0000               0
+ 1000  med +0.0000  0.0000             0   +0.0005    0.0005               1
+ 1000 high +0.0000  0.0000             0   +0.0000    0.0000               0
+ 5000  med +0.0000  0.0000             0   +0.0000    0.0000               0
+ mult_fixed mult_random
+     0.9090      0.9095
+     0.8965      0.8965
+     0.9300      0.9295
+     0.9270      0.9270
+     0.8930      0.8935
+     0.9160      0.9160
+     0.9260      0.9260
+max |random - fixed| (rounded 3dp columns): 0.000
+max |random - fixed| (unrounded, cluster-Wald): 0.0000 ; (multiplier): 0.0005
+per horizon, max over cells of |random - fixed|: cluster-Wald 0.0000 ; multiplier 0.0025 (at n=300 med, tau=3)
+range of new Fixed column: 0.908 - 0.941 ; printed: 0.910 - 0.943
+
+Truth-free diagnostics (means over tau; rms_se/emp_sd calibration):
+    n   ev ratio_rf rms_ratio_rf  cal_f  cal_r w_cl_f w_cl_r  w_mu_f  w_mu_r
+  300  low        1            1 0.9080 0.9080 0.3012 0.3012 0.28792 0.28791
+  300  med        1            1 0.8947 0.8946 0.3182 0.3182 0.30628 0.30626
+  300 high        1            1 0.9619 0.9619 0.2933 0.2933 0.28474 0.28478
+ 1000  low        1            1 0.9880 0.9880 0.1862 0.1862 0.17736 0.17735
+ 1000  med        1            1 0.9027 0.9027 0.1948 0.1948 0.18653 0.18653
+ 1000 high        1            1 0.9225 0.9225 0.1780 0.1780 0.17181 0.17181
+ 5000  med        1            1 0.9491 0.9491 0.1039 0.1039 0.09849 0.09848
+ max_ratio_rf
+            1
+            1
+            1
+            1
+            1
+            1
+            1
+
+=== REPRODUCTION DIAGNOSTIC (superseded single-draw MC truth; NOT a result) ===
+    n   ev printed_fixed superseded_fixed printed_random superseded_random
+  300  low         0.922            0.922          0.922             0.922
+  300  med         0.916            0.916          0.916             0.916
+  300 high         0.934            0.934          0.934             0.934
+ 1000  low         0.943            0.943          0.943             0.943
+ 1000  med         0.910            0.910          0.910             0.910
+ 1000 high         0.933            0.933          0.933             0.933
+ 5000  med         0.939            0.939          0.939             0.939
+ fixed_4dp random_4dp match
+    0.9220     0.9220  TRUE
+    0.9160     0.9160  TRUE
+    0.9345     0.9345  TRUE
+    0.9425     0.9425  TRUE
+    0.9100     0.9100  TRUE
+    0.9330     0.9330  TRUE
+    0.9390     0.9390  TRUE
+printed table reproduced from the persisted replicates + superseded truth: 7/7 cells
+truth shift exact - superseded (MRD), by cell x tau:
+         [,1]     [,2]     [,3]     [,4]     [,5]
+[1,] -0.00074 -0.00126 -0.00088 -0.00013 -0.00066
+[2,] -0.00076 -0.00155 -0.00101 -0.00040 -0.00084
+[3,] -0.00037 -0.00064  0.00011 -0.00053 -0.00053
+[4,] -0.00074 -0.00126 -0.00088 -0.00013 -0.00066
+[5,] -0.00076 -0.00155 -0.00101 -0.00040 -0.00084
+[6,] -0.00037 -0.00064  0.00011 -0.00053 -0.00053
+[7,] -0.00076 -0.00155 -0.00101 -0.00040 -0.00084
+
+=== CROSS-CHECK vs canonical main-simulation aggregation (exact truths; other seeds) ===
+(canonical truth column asserted equal to dev/truth_cache_exact.rds)
+    n   ev canon_nsim canon_cl s5_fixed s5_fixed_mcse canon_mult s5_mult_fixed
+  300  low       1000   0.9070   0.9210        0.0092     0.8898        0.9090
+  300  med       1000   0.9242   0.9160        0.0093     0.9056        0.8965
+  300 high       1000   0.9366   0.9345        0.0074     0.9272        0.9300
+ 1000  low       1000   0.9202   0.9410        0.0073     0.9062        0.9270
+ 1000  med       1000   0.9214   0.9080        0.0098     0.9080        0.8930
+ 1000 high       1000   0.9230   0.9330        0.0077     0.9080        0.9160
+ 5000  med       1000   0.9260   0.9360        0.0095     0.9088        0.9260
+
+wrote dev/s5_rescore/s5_scored.rds and dev/s5_rescore/s5_summary.csv
+SCORE_S5 DONE

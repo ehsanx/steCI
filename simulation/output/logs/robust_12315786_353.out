@@ -1,0 +1,5 @@
+[robust] task 353 start Sun Jul 19 12:52:13 PDT 2026 on se010
+[robust] task 353 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] tvfx gi=9 n=5000 alpha=0.4 | chunk 46, replicates 451..460
+[robust] wrote rob_tvfx_gi09_n5000_a04_R500_chunk046.rds | 10/10 ok | 638.8s | peak 468 MB
+[robust] task 353 done  Sun Jul 19 13:03:15 PDT 2026

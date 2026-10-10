@@ -1,0 +1,5 @@
+[robust] task 225 start Sun Jul 19 12:52:14 PDT 2026 on se161
+[robust] task 225 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] tvfx gi=3 n=5000 alpha=0.15 | chunk 32, replicates 311..320
+[robust] wrote rob_tvfx_gi03_n5000_a015_R500_chunk032.rds | 10/10 ok | 537.6s | peak 406 MB
+[robust] task 225 done  Sun Jul 19 13:01:25 PDT 2026

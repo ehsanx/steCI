@@ -1,0 +1,87 @@
+\subsection{Tied event times in the nonparametric bootstrap}
+\label{app:boottie}
+Resampling subjects with replacement duplicates their event times, so every
+bootstrap resample contains tied event times, on average about $110$, $340$ and
+$1700$ per resample at $n=300$, $1000$ and $5000$. The simulated datasets
+themselves contain none. \texttt{timereg::aalen} separates tied times by adding a
+small random increment to every copy after the first and then processes the copies
+one at a time. The simulation M4 results in the main text use this implementation (the applied example processes tied event times simultaneously). To gauge how
+much the convention matters, we refitted the same $B=200$ resamples of the same
+simulated datasets with tied copies processed simultaneously, and compared the two
+conventions resample by resample. The simultaneous refits use either our own
+weighted-least-squares implementation of the same fit or \texttt{timereg} applied with
+each duplicated subject collapsed to one row weighted by its multiplicity; wherever
+both were computed they agree to within $4\times10^{-5}$. The comparison uses no true values and so does not
+address coverage.
+
+A larger planned comparison was stopped after about $5\%$ of its replicates had run;
+Web Table~\ref{tab:boottie} summarises those replicates in two separately labelled
+panels. Panel A uses the production replicates that are complete in every scenario of
+a given sample size: all $27$ scenarios at $n=300$ and $n=1000$ and the $9$
+moderate-confounding scenarios at $n=5000$, with $11$, $10$ and $14$ replicates per
+scenario ($693$ scenario--replicate pairs). Adding the $24$ pairs from incompletely
+run replicates changes no SE-change, median or width-change entry by more than $0.1$
+percentage point, no limit shift by more than $0.003$ standard errors, and no
+${>}5\%$ share by more than $1$ percentage point. Panel B is a pilot on two further
+replicates of the $27$ scenarios at each of $n=300$ and $n=1000$ and one replicate of
+$3$ scenarios at $n=5000$ ($111$ distinct pairs); it is too small for Monte-Carlo
+standard errors.
+
+In Panel A the \texttt{timereg} standard error was the larger in $99.7\%$ of paired
+comparisons, and in at least $98.9\%$ within every row. Its average excess was larger
+at later horizons at each sample size, from under $1\%$ at $\tau=1$ to $2.6$--$5.1\%$
+at $\tau=5$, and was $0.8$--$1.2\%$ for $\gamma$. The changes were right-skewed:
+medians lie below the means, and single scenario--replicate pairs reached $26\%$ at
+$n=1000$ ($\tau=2$) and $90\%$ at $n=300$ ($\tau=5$). The resamples of the latter
+pair included risk-difference estimates outside $[-1,1]$; without the $15$ pairs
+in that row with such estimates or percentile limits, the row's mean is $4.3\%$.
+
+Percentile intervals widened by similar proportions. For $\gamma$ and from $\tau=2$
+on, this was mainly because the lower limit moved down, by up to $0.11$ tie-exact
+standard errors on average, while the upper limit moved by at most about $0.05$; at
+$\tau=1$ both limits moved by at most about $0.02$. Because the tie convention moves
+the interval limits as well as the spread, these standard-error changes do not
+determine how coverage would change.
+
+As a rough guide in the units of main-text
+Table~3, we applied each scenario's standard-error change, estimated from its $11$
+($n=300$) or $10$ ($n=1000$) Panel~A replicates, to its published M4 SE ratio, which
+averages up to $1000$ replicates. This projects $@SER300@$ in place of $@PUB300@$ at
+$n=300$ and $@SER1000@$ in place of $@PUB1000@$ at $n=1000$ (Monte-Carlo standard errors
+of the projected change $@MC300@$ and $@MC1000@$). The projection assumes that the
+completed replicates are representative of the full run; it is not a recomputation over
+the full simulation, and at $n=5000$, where the subset covers $9$ of the $27$ scenarios,
+none is made. The tie-exact refits were run under
+R~4.5.1 with \texttt{timereg}~2.0.7; the \texttt{timereg} arm is the main simulation
+run.
+
+\begin{table}[htbp]\centering\footnotesize
+\caption{Sensitivity of the nonparametric bootstrap (M4) standard error and
+percentile interval to tie handling: \texttt{timereg} refits (random jitter) versus
+tie-exact refits on identical resamples. Panel A: production replicates ($n=300$:
+$27$ scenarios $\times$ $11$ replicates; $n=1000$: $27\times10$; $n=5000$: the $9$
+moderate-confounding scenarios $\times$ $14$). SE change: mean over scenarios of the
+ratio of mean bootstrap SEs (\texttt{timereg} over tie-exact) minus one, in \%;
+median: median per-replicate change, in \%; ${>}5\%$: percentage of replicates with a
+change above $5\%$; width change: as SE change, for the percentile-interval width;
+lower and upper limit: mean shift of the percentile limits (\texttt{timereg} minus
+tie-exact) in tie-exact SE units. Monte-Carlo standard errors in parentheses, by a
+jackknife over replicate indices (a replicate shares its random-number seed across
+scenarios). Panel B: pilot, mean SE change in \% ($n=300$ and $n=1000$: $27$ scenarios
+$\times$ $2$ replicates; $n=5000$: $3$ scenarios $\times$ $1$), too small for
+Monte-Carlo standard errors. Coverage was not computed. $\gamma$: constant hazard
+difference (E1); $\tau$: horizon of the marginal risk difference (E2).}
+\label{tab:boottie}
+\begin{tabular}{@{}llcccccc@{}}
+\toprule
+\rowcolor{headGrey} $n$ & Estimand & SE change & Median & ${>}5\%$ & Width change & Lower limit & Upper limit\\
+\midrule
+\multicolumn{8}{@{}l}{\emph{A. Production subset}}\\
+@PANELA@
+\midrule
+\multicolumn{8}{@{}l}{\emph{B. Pilot (mean SE change, \%)}}\\
+ & & $n=300$ & $n=1000$ & $n=5000$ & & & \\
+@PANELB@
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,5 @@
+[robust] task 48 start Sun Jul 19 12:52:10 PDT 2026 on se013
+[robust] task 48 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] misspec gi=3 n=5000 alpha=0.15 | chunk 26, replicates 251..260
+[robust] wrote rob_misspec_gi03_n5000_a015_R500_chunk026.rds | 10/10 ok | 583.5s | peak 407 MB
+[robust] task 48 done  Sun Jul 19 13:03:07 PDT 2026

@@ -1,0 +1,5 @@
+[robust] task 297 start Sun Jul 19 12:52:12 PDT 2026 on se231
+[robust] task 297 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] tvfx gi=6 n=5000 alpha=0.25 | chunk 47, replicates 461..470
+[robust] wrote rob_tvfx_gi06_n5000_a025_R500_chunk047.rds | 10/10 ok | 632.6s | peak 434 MB
+[robust] task 297 done  Sun Jul 19 13:03:11 PDT 2026

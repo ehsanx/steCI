@@ -1,0 +1,5 @@
+[robust] task 244 start Sun Jul 19 12:52:13 PDT 2026 on se161
+[robust] task 244 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] tvfx gi=4 n=300 alpha=0.25 | chunk 1, replicates 1..250
+[robust] wrote rob_tvfx_gi04_n300_a025_R500_chunk001.rds | 250/250 ok | 193.8s | peak 264 MB
+[robust] task 244 done  Sun Jul 19 12:56:03 PDT 2026

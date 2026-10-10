@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.sh text eol=lf
+*.slurm text eol=lf
+*.rds binary
+*.pdf binary

@@ -1,0 +1,5 @@
+[robust] task 349 start Sun Jul 19 12:52:13 PDT 2026 on se010
+[robust] task 349 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] tvfx gi=9 n=5000 alpha=0.4 | chunk 42, replicates 411..420
+[robust] wrote rob_tvfx_gi09_n5000_a04_R500_chunk042.rds | 10/10 ok | 637.0s | peak 472 MB
+[robust] task 349 done  Sun Jul 19 13:03:02 PDT 2026

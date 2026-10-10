@@ -1,0 +1,5 @@
+[robust] task 7 start Sun Jul 19 12:52:12 PDT 2026 on se044
+[robust] task 7 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] 2confounder gi=3 n=300 alpha=0.25 | chunk 2, replicates 251..300
+[robust] wrote rob_2confounder_gi03_n300_a025_R300_chunk002.rds | 50/50 ok | 39.1s | peak 275 MB
+[robust] task 7 done  Sun Jul 19 12:53:04 PDT 2026

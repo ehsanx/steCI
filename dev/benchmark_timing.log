@@ -1,0 +1,14 @@
+benchmark_timing.R -- n = 5000, three runs on 2026-10-05
+machine: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz (author's laptop), Windows 11; R version 4.5.1 (2025-06-13 ucrt)
+command: Rscript dev/benchmark_timing.R 5000   (single R process; timereg/steCI defaults)
+
+                                     run 1    run 2    run 3    median
+  ste_prepare (once)                 6.86 s   6.39 s   5.49 s   6.39 s
+  ste_estimate both (prep + 2 fits) 20.87 s  20.34 s  23.76 s  20.87 s
+  aalen_if (M6 fit incl. IFs)       10.46 s   9.60 s  10.47 s  10.46 s
+  ci_lef (M6), B = 200              15.23 s  15.65 s  15.15 s  15.23 s
+
+Derived (used in the paper's computational-cost section and Table of per-replicate cost):
+  M4 nonparametric bootstrap per replicate ~ B x (prep + 2 fits) = 200 x 20.9 s ~ 70 min (extrapolated, not timed end to end)
+  M6 multiplier / LEF per replicate (ci_lef, B = 200) ~ 15 s (measured)
+These replace the earlier unlogged figures (~23 s per refit, ~77 min, ~13 s).

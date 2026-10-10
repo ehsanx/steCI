@@ -1,0 +1,45 @@
+Package: steCI
+Title: Confidence Intervals for Sequential Trial Emulation with Additive Hazards
+Version: 0.0.1
+Authors@R: c(
+    person("M. Ehsan", "Karim", email = "ehsan7x7@gmail.com",
+           role = c("aut", "cre")))
+Description: Estimation of marginal risk differences and constant hazard
+    differences via sequential trial emulation (STE) using weighted Aalen
+    additive hazards models, for time-to-event outcomes with a monotone
+    time-varying treatment and a time-varying confounder. Provides several
+    confidence-interval procedures for the causal estimands: model-based,
+    robust and cluster-robust analytic standard errors, the nonparametric
+    (subject-level) bootstrap, the jackknife, and a linearised
+    estimating-function / multiplier (wild) bootstrap with pointwise intervals
+    and simultaneous confidence bands for the marginal risk-difference curve.
+    Includes
+    helpers to simulate data from an additive-hazard marginal structural
+    model (Keogh et al. 2021), to expand longitudinal data into sequentially
+    emulated trials, and to compute stabilized inverse-probability-of-
+    artificial-censoring weights. Reimplements, with citation, the estimator
+    of Keogh et al. (2023) <doi:10.1002/sim.9718> and the confidence-interval
+    comparison framework of Limozin, Seaman and Su (2025)
+    <doi:10.1177/09622802251356594>.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Depends:
+    R (>= 4.1.0)
+Imports:
+    stats,
+    utils,
+    dplyr,
+    tidyr,
+    rlang,
+    timereg,
+    survival
+Suggests:
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown
+Config/testthat/edition: 3
+VignetteBuilder: knitr
+URL: https://github.com/ehsanx/steCI
+BugReports: https://github.com/ehsanx/steCI/issues

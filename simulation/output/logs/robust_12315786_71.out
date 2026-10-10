@@ -1,0 +1,5 @@
+[robust] task 71 start Sun Jul 19 12:52:11 PDT 2026 on se084
+[robust] task 71 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] misspec gi=3 n=5000 alpha=0.15 | chunk 49, replicates 481..490
+[robust] wrote rob_misspec_gi03_n5000_a015_R500_chunk049.rds | 10/10 ok | 601.1s | peak 419 MB
+[robust] task 71 done  Sun Jul 19 13:03:06 PDT 2026

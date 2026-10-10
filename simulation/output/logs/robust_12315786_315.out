@@ -1,0 +1,5 @@
+[robust] task 315 start Sun Jul 19 12:52:12 PDT 2026 on se231
+[robust] task 315 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] tvfx gi=9 n=5000 alpha=0.4 | chunk 8, replicates 71..80
+[robust] wrote rob_tvfx_gi09_n5000_a04_R500_chunk008.rds | 10/10 ok | 603.6s | peak 468 MB
+[robust] task 315 done  Sun Jul 19 13:02:59 PDT 2026

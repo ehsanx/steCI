@@ -1,0 +1,5 @@
+[robust] task 220 start Sun Jul 19 12:52:13 PDT 2026 on se161
+[robust] task 220 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] tvfx gi=3 n=5000 alpha=0.15 | chunk 27, replicates 261..270
+[robust] wrote rob_tvfx_gi03_n5000_a015_R500_chunk027.rds | 10/10 ok | 531.2s | peak 415 MB
+[robust] task 220 done  Sun Jul 19 13:01:35 PDT 2026

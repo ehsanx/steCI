@@ -1,0 +1,148 @@
+######## A. CURRENT (UNPAIRED) WEB TABLE S1 FROM metrics_ci.csv ########
+      tau
+n      1     2     3     4     5
+  300  0 -0.52 -1.71 -1.99 -0.71
+  1000 0 -0.28 -1.08 -1.66 -1.49
+  5000 0 -0.09 -0.51 -0.92 -0.99
+  [OK] unpaired table body == published Web Table S1
+  [OK] 405 analytic cells
+  [OK] pooled signed median -0.35%
+  [OK] range -3.3% to +4.7%
+  [OK] 36% of cells exceed 1%
+  [OK] 77% negative
+  [OK] median |change| 0.42%
+  [OK] tau=1 analytic exactly zero in 79 of 81 (unpaired)
+  tau=1 analytic non-zero cells (unpaired): n300_evhigh_cfmoderate_pvhigh +0.0059% (n_sim 975 vs 970); n300_evhigh_cfweak_pvhigh -0.0484% (n_sim 812 vs 793)
+  tau=1 multiplier (unpaired): exactly zero in 0 of 81; max |change| 0.715%
+
+--- UNPAIRED analytic (as published): 405 cells ---
+  signed median -0.347% | median |change| 0.421% | range -3.34% to +4.75%
+  |change| > 1%: 144 of 405 (35.6%) | > 2%: 13.3% | negative: 311 (76.8%) | exactly 0: 79
+  min at n300_evhigh_cfstrong_pvmed tau=4 (-3.340%); max at n300_evhigh_cfweak_pvhigh tau=5 (+4.746%)
+
+--- UNPAIRED multiplier: 405 cells ---
+  signed median -0.465% | median |change| 0.523% | range -3.26% to +4.69%
+  |change| > 1%: 141 of 405 (34.8%) | > 2%: 13.8% | negative: 327 (80.7%) | exactly 0: 0
+  min at n300_evhigh_cfstrong_pvmed tau=3 (-3.262%); max at n300_evhigh_cfweak_pvhigh tau=5 (+4.687%)
+
+unpaired median |change| by n x tau (analytic):
+      tau
+n      1    2    3    4    5
+  300  0 0.52 1.71 1.99 1.59
+  1000 0 0.28 1.08 1.66 1.62
+  5000 0 0.09 0.51 0.92 0.99
+
+######## B. REBUILD FROM replicates_all.rds ########
+  read + filter: 5.8 s; 1614120 rows
+  [OK] one row per (scenario, tau, rep) per method
+  [OK] 1620 (scenario, tau, method) cells matched
+  [OK] replicate means == metrics_ci mean_se
+  invalid-but-present SE rows (guard): m6_analytic_cluster=29 m6a2_analytic_cluster=15 m6_multiplier=30 m6a2_multiplier=17
+
+######## C. PAIRED: COMMON VALID REPLICATES ########
+  [OK] 405 paired analytic cells
+  [OK] 405 paired multiplier cells
+  m6_analytic_cluster vs m6a2_analytic_cluster: common replicate-horizons 403440; A1-only valid 121, A2-only valid 15; cells where the sets differ: 23 of 405
+    largest set difference: n300_evhigh_cfweak_pvhigh tau=1: A1 812, A2 793, common 793
+  m6_multiplier vs m6a2_multiplier: common replicate-horizons 403440; A1-only valid 120, A2-only valid 13; cells where the sets differ: 21 of 405
+    largest set difference: n300_evhigh_cfweak_pvhigh tau=1: A1 812, A2 793, common 793
+
+PAIRED analytic: median % change by n x tau (THE NEW TABLE BODY)
+      tau
+n      1     2     3     4     5
+  300  0 -0.52 -1.71 -2.01 -0.71
+  1000 0 -0.28 -1.08 -1.78 -1.49
+  5000 0 -0.09 -0.51 -0.92 -0.99
+
+change vs published body (paired - unpaired, rounded):
+      tau
+n      1 2 3     4 5
+  300  0 0 0 -0.02 0
+  1000 0 0 0 -0.12 0
+  5000 0 0 0  0.00 0
+
+PAIRED analytic: median |change| by n x tau
+      tau
+n      1    2    3    4    5
+  300  0 0.52 1.71 2.01 1.59
+  1000 0 0.28 1.08 1.78 1.62
+  5000 0 0.09 0.51 0.92 0.99
+
+PAIRED analytic: by horizon (pooled over n)
+  tau median_pct median_abs max_abs frac_gt1 frac_neg
+1   1       0.00       0.00    0.00    0.000    0.000
+2   2      -0.28       0.28    1.91    0.148    1.000
+3   3      -0.86       0.86    3.26    0.444    1.000
+4   4      -1.31       1.33    3.39    0.593    0.951
+5   5      -1.07       1.21    4.43    0.593    0.877
+
+PAIRED analytic: by n (pooled over tau)
+        n median_pct max_abs frac_gt1
+300   300     -0.473    4.43    0.459
+1000 1000     -0.432    3.68    0.415
+5000 5000     -0.260    1.65    0.193
+
+--- PAIRED analytic (common valid replicates): 405 cells ---
+  signed median -0.347% | median |change| 0.421% | range -3.39% to +4.43%
+  |change| > 1%: 144 of 405 (35.6%) | > 2%: 14.8% | negative: 310 (76.5%) | exactly 0: 81
+  min at n300_evmed_cfstrong_pvmed tau=4 (-3.391%); max at n300_evhigh_cfweak_pvhigh tau=5 (+4.425%)
+
+--- PAIRED multiplier (common valid replicates): 405 cells ---
+  signed median -0.465% | median |change| 0.523% | range -3.26% to +4.41%
+  |change| > 1%: 141 of 405 (34.8%) | > 2%: 14.6% | negative: 327 (80.7%) | exactly 0: 0
+  min at n300_evhigh_cfstrong_pvmed tau=3 (-3.262%); max at n300_evhigh_cfweak_pvhigh tau=5 (+4.407%)
+
+PAIRED multiplier: median % change by n x tau
+      tau
+n          1     2     3     4     5
+  300  -0.04 -0.52 -1.67 -2.16 -0.73
+  1000  0.00 -0.37 -0.96 -1.74 -1.57
+  5000  0.00 -0.14 -0.56 -0.87 -0.92
+
+--- tau = 1 under pairing ---
+  analytic : % change exactly 0 in 81 of 81 scenarios; max |change| 0.00e+00%
+             per-replicate SEs bitwise identical in 80694 of 80694 replicate pairs (81 scenarios all-identical)
+  multiplier: % change exactly 0 in 0 of 81 scenarios; max |change| 0.715%; median |change| 0.157%
+
+######## D. SENTENCE CHECKS (appendix B growth sentence) ########
+  n=300  median |change| tau1..5: 0.00 0.52 1.71 2.01 1.59 | signed: 0.00 -0.52 -1.71 -2.01 -0.71
+  n=1000  median |change| tau1..5: 0.00 0.28 1.08 1.78 1.62 | signed: 0.00 -0.28 -1.08 -1.78 -1.49
+  n=5000  median |change| tau1..5: 0.00 0.09 0.51 0.92 0.99 | signed: 0.00 -0.09 -0.51 -0.92 -0.99
+  |signed median| strictly increases tau=1..4 at every n: TRUE
+  |signed median| at tau=5 vs tau=4: n=300 falls back; n=1000 falls back; n=5000 grows
+  median |change| at tau=5 vs tau=4: n=300 2.01->1.59; n=1000 1.78->1.62; n=5000 0.92->0.99
+  dispersion across the 27 scenarios (IQR of % change) by n x tau:
+      tau
+n      1    2    3    4    5
+  300  0 1.26 2.38 2.34 1.74
+  1000 0 0.91 1.58 1.92 1.72
+  5000 0 0.31 0.75 0.89 0.94
+  dispersion across the 27 scenarios (SD of % change) by n x tau:
+      tau
+n      1    2    3    4    5
+  300  0 0.66 1.13 1.38 1.90
+  1000 0 0.46 0.91 1.05 1.43
+  5000 0 0.16 0.40 0.51 0.57
+  cells with |change|>4%: n300_evhigh_cfweak_pvhigh tau=5 +4.43
+  tau of the 10 largest |change|: 5 5 5 5 4 4 3 4 3 4
+
+######## E. LaTeX: regenerated Web Table S1 body ########
+$300$    & $0.00$ & $-0.52$ & $-1.71$ & $-2.01$ & $-0.71$\\
+$1000$   & $0.00$ & $-0.28$ & $-1.08$ & $-1.78$ & $-1.49$\\
+$5000$   & $0.00$ & $-0.09$ & $-0.51$ & $-0.92$ & $-0.99$\\
+
+POOLED (paired): median -0.35%, range -3.4% to +4.4%, 36% exceed 1%, 77% negative, median |change| 0.42%
+
+######## F. WHY NOT -3.6%: the same pairing WITHOUT the SE <= 0.5 check ########
+
+--- PAIRED analytic, finite & > 0 only (no SE <= 0.5 check): 405 cells ---
+  signed median -0.347% | median |change| 0.421% | range -3.61% to +4.43%
+  |change| > 1%: 144 of 405 (35.6%) | > 2%: 14.8% | negative: 310 (76.5%) | exactly 0: 81
+  min at n300_evmed_cfstrong_pvmed tau=4 (-3.605%); max at n300_evhigh_cfweak_pvhigh tau=5 (+4.425%)
+  table body unchanged by the check:  TRUE 
+
+######## G. COVERAGE MOVE (tab:e2 '0.1--0.6 percentage points') on common replicates ########
+  m6_analytic_cluster    -> m6a2_analytic_cluster    A1-A2 (pp) at n=300/1000/5000: 0.65 / 0.56 / 0.29
+  m6_multiplier          -> m6a2_multiplier          A1-A2 (pp) at n=300/1000/5000: 0.41 / 0.34 / 0.07
+
+APPROACH-2 PAIRED DONE

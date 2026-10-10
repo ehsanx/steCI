@@ -1,0 +1,16 @@
+# dev/heart_ties/verify_default_path.R -- package defaults (ties = "timereg", time.grid = NULL) vs the canonical
+# per-replicate record data/exact/results/replicates_all.rds, every method, tolerance 1e-12. R 4.5.1, timereg 2.0.7.
+# Replicate 1: rerun on this compendium's steCI/R (2026-10-06). Replicates 2-3: stored runs of the same
+# package change made with the paper's source tree (2026-10-05).
+
+steCI code: steCI/R
+n300_evlow_cfweak_pvhigh         rep    1:  57/ 57 rows matched; max|diff| est 1.1e-16 se 9.7e-17 lower 3.3e-16 upper 3.3e-16; failed_methods ''/''; 3.9 min -> REPRODUCES
+ALL REPLICATES REPRODUCE (<= 1e-12)
+
+steCI code: steCI/R
+n300_evhigh_cfstrong_pvlow       rep    2:  57/ 57 rows matched; max|diff| est 3.9e-16 se 7.6e-16 lower 1.4e-14 upper 1.5e-14; failed_methods ''/''; 8.0 min -> REPRODUCES
+ALL REPLICATES REPRODUCE (<= 1e-12)
+
+steCI code: steCI/R
+n1000_evmed_cfmoderate_pvmed     rep    3:  57/ 57 rows matched; max|diff| est 1.9e-15 se 2.1e-16 lower 3.7e-15 upper 3.7e-15; failed_methods ''/''; 28.7 min -> REPRODUCES
+ALL REPLICATES REPRODUCE (<= 1e-12)

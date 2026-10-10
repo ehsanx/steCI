@@ -1,0 +1,5 @@
+[robust] task 88 start Sun Jul 19 12:52:11 PDT 2026 on se084
+[robust] task 88 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] misspec gi=6 n=5000 alpha=0.25 | chunk 9, replicates 81..90
+[robust] wrote rob_misspec_gi06_n5000_a025_R500_chunk009.rds | 10/10 ok | 673.9s | peak 449 MB
+[robust] task 88 done  Sun Jul 19 13:03:51 PDT 2026

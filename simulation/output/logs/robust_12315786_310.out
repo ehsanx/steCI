@@ -1,0 +1,5 @@
+[robust] task 310 start Sun Jul 19 12:52:12 PDT 2026 on se231
+[robust] task 310 of 357 total tasks (studies: 2confounder,misspec,tvfx)
+[robust] tvfx gi=9 n=5000 alpha=0.4 | chunk 3, replicates 21..30
+[robust] wrote rob_tvfx_gi09_n5000_a04_R500_chunk003.rds | 10/10 ok | 620.0s | peak 474 MB
+[robust] task 310 done  Sun Jul 19 13:02:58 PDT 2026
